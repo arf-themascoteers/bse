@@ -27,13 +27,15 @@ def get_algorithm(name):
         return RandomForestRegressor()
 
 
-def get_results():
-    if os.path.exists(results_file):
-        return pd.read_csv(results_file)
+def get_results(result_output):
+    if os.path.exists(result_output):
+        return pd.read_csv(result_output)
     return pd.DataFrame(columns=["skip","n_bands","case_name","algorithm","train_size","R^2","bands"])
 
 
-def run_case(algorithm,train_size,skip=0,case_name=None,bands=None):
+def run_case(algorithm,train_size,skip=0,case_name=None,bands=None,result_output=None):
+    if result_output is None:
+        result_output = results_file
     model = get_algorithm(algorithm)
     train_data, test_data = train_test_split(data, train_size=train_size, random_state=42)
     if bands is None:
@@ -57,7 +59,8 @@ def run_case(algorithm,train_size,skip=0,case_name=None,bands=None):
     r2 = r2_score(y_test, y_pred)
     #rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
-    results = get_results()
+
+    results = get_results(result_output)
     results.loc[len(results)] = [skip,len(bands),case_name,algorithm,train_size,r2,bands_str]
     results.to_csv(results_file, index=False)
 
