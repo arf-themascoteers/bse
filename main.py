@@ -37,14 +37,14 @@ def run_case(algorithm,train_size,skip=0,case_name=None,bands=None):
     model = get_algorithm(algorithm)
     train_data, test_data = train_test_split(data, train_size=train_size, random_state=42)
     if bands is None:
-        bands = [i for i in range(0,len(data.columns)-1,1)]
+        bands = [i for i in range(0,len(data.columns)-1,skip)]
     bands = sorted(bands)
     if case_name is None:
         case_name = f"{train_size}"
         if skip > 0:
             case_name += f"_{skip}"
         case_name += f"_{algorithm}"
-    bands_str = "|".join(bands)
+    bands_str = "|".join([str(b) for b in bands])
 
     X_train = train_data[:,bands]
     X_test = test_data[:,bands]
