@@ -21,7 +21,7 @@ def get_algorithm(name):
         return LinearRegression()
     if name == "svr":
         return SVR(C=100, kernel='rbf', gamma=1)
-    if name == "nn":
+    if name == "mlp":
         return MLPRegressor()
     if name == "rf":
         return RandomForestRegressor()
@@ -57,19 +57,22 @@ def run_case(algorithm,train_size,skip=0,case_name=None,bands=None,result_output
 
     y_pred = model.predict(X_test)
     r2 = r2_score(y_test, y_pred)
+    r2 = round(r2,3)
+    if r2 <0 :
+        r2 = 0
     #rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
 
     results = get_results(result_output)
     results.loc[len(results)] = [skip,len(bands),case_name,algorithm,train_size,r2,bands_str]
-    results.to_csv(results_file, index=False)
+    results.to_csv(result_output, index=False)
 
 
 if __name__ == "__main__":
     algorithm = ["lr"]
     skip = [1,10,50,90,130,170,210,250,290,330,370,410,450,490,530]
-    train_size = [1,11,21,31,41,51,61,71,81,91]
+    train_size = [0.01,0.11,0.21,0.31,0.41,0.51,0.61,0.71,0.81,0.91]
     for a in algorithm:
         for s in skip:
             for t in train_size:
-                run_case(a,t,s)
+                run_case(a,t/100,s)
