@@ -75,4 +75,4 @@ if __name__ == "__main__":
     for a in algorithm:
         for s in skip:
             for t in train_size:
-                run_case(a,t/100,s)
+                run_case(a,t,s)
