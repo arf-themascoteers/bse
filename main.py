@@ -8,12 +8,12 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 import os
 
-TEST = False
+TEST = True
 results_file = "results.txt"
 file = "lucas.csv"
 if TEST:
     file = "lucas_min.csv"
-data = pd.read_csv(f"{file}")
+data = pd.read_csv(f"{file}").to_numpy()
 
 
 def get_algorithm(name):
@@ -37,7 +37,7 @@ def run_case(algorithm,train_size,skip=0,case_name=None,bands=None):
     model = get_algorithm(algorithm)
     train_data, test_data = train_test_split(data, train_size=train_size, random_state=42)
     if bands is None:
-        bands = [i for i in range(0,len(data.columns)-1,skip)]
+        bands = [i for i in range(0,data.shape[1]-1,skip)]
     bands = sorted(bands)
     if case_name is None:
         case_name = f"{train_size}"
@@ -66,6 +66,7 @@ if __name__ == "__main__":
     algorithm = ["lr"]
     skip = [10,50,90,130,170,210,250,290,330,370,410,450,490,530]
     train_size = [1,11,21,31,41,51,61,71,81,91]
-    for s in skip:
-        for t in train_size:
-            run_case(algorithm,t,s)
+    for a in algorithm:
+        for s in skip:
+            for t in train_size:
+                run_case(a,t,s)
