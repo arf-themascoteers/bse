@@ -13,7 +13,7 @@ results_file = "results.txt"
 file = "lucas.csv"
 if TEST:
     file = "lucas_min.csv"
-data = pd.read_csv(f"../data/{file}")
+data = pd.read_csv(f"{file}")
 
 
 def get_algorithm(name):
