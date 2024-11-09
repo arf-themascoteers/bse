@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 import os
 
-TEST = True
+TEST = False
 results_file = "results.csv"
 file = "lucas.csv"
 if TEST:
