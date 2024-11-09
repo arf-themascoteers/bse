@@ -9,7 +9,7 @@ from sklearn.neural_network import MLPRegressor
 import os
 
 TEST = True
-results_file = "results.txt"
+results_file = "results.csv"
 file = "lucas.csv"
 if TEST:
     file = "lucas_min.csv"
@@ -48,8 +48,8 @@ def run_case(algorithm,train_size,skip=0,case_name=None,bands=None):
 
     X_train = train_data[:,bands]
     X_test = test_data[:,bands]
-    y_train = train_data[:,0]
-    y_test = test_data[:,0]
+    y_train = train_data[:,-1]
+    y_test = test_data[:,-1]
 
     model.fit(X_train, y_train)
 
