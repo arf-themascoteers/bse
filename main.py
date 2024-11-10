@@ -9,7 +9,7 @@ from sklearn.neural_network import MLPRegressor
 import os
 
 TEST = False
-results_file = "back/results.csv"
+results_file = "results.csv"
 file = "lucas.csv"
 if TEST:
     file = "lucas_min.csv"
