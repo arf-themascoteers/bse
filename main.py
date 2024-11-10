@@ -42,12 +42,25 @@ def run_case(algorithm,train_size,n_bands=0,bands=None,case_name=None,result_out
         bands = np.linspace(0, 4199, n_bands)
         bands = np.round(bands, 0).astype(int)
     else:
+        manual = 1
         n_bands = len(bands)
     bands = sorted(bands)
     if case_name is None:
-        case_name = f"{train_size}_{algorithm}_{manual}"
+        case_name = f"{algorithm}_{train_size}_{n_bands}_{manual}"
 
     bands_str = "|".join([str(b) for b in bands])
+
+    results = get_results(result_output)
+    shortlisted = results[
+        (results["algorithm"] == algorithm) &
+        (results["train_size"] == train_size) &
+        (results["n_bands"] == n_bands) &
+        (results["manual"] == manual)
+    ]
+
+    if not shortlisted.empty:
+        print(f"{case_name} exists. Skipping.")
+        return
 
     X_train = train_data[:,bands]
     X_test = test_data[:,bands]
@@ -64,7 +77,7 @@ def run_case(algorithm,train_size,n_bands=0,bands=None,case_name=None,result_out
     #rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 
 
-    results = get_results(result_output)
+
     results.loc[len(results)] = [manual,n_bands,case_name,algorithm,train_size,r2,bands_str]
     results.to_csv(result_output, index=False)
 
