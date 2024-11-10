@@ -5,7 +5,7 @@ import numpy as np
 
 
 df = pd.read_csv(r'results.csv')
-df = df[df["train_size"]==91]
+df = df[df["train_size"]==0.91]
 df["train_size"] = (df["train_size"] * 100).astype(int)
 skip_df = df[df["manual"]==0].copy()
 
