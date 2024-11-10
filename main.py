@@ -83,7 +83,7 @@ def run_case(algorithm,train_size,n_bands=0,bands=None,case_name=None,result_out
 
 
 if __name__ == "__main__":
-    algorithm = ["lr","svr","rf","mlp"]
+    algorithm = ["lr","svr","mlp","rf"]
     n_band = [300, 600,900,1200, 1500, 1800, 2100, 2400, 2700, 3000, 3300, 3600, 3900, 4200]
     train_size = [0.01,0.11,0.21,0.31,0.41,0.51,0.61,0.71,0.81,0.91]
     for a in algorithm:
