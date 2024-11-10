@@ -4,7 +4,7 @@ from matplotlib import cm
 import numpy as np
 
 
-df = pd.read_csv(r'results.csv')
+df = pd.read_csv(r'back/results.csv')
 df["train_size"] = (df["train_size"] * 100).astype(int)
 skip_df = df[df["skip"]!=0].copy()
 

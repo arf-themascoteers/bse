@@ -9,7 +9,7 @@ from sklearn.neural_network import MLPRegressor
 import os
 
 TEST = False
-results_file = "results.csv"
+results_file = "back/results.csv"
 file = "lucas.csv"
 if TEST:
     file = "lucas_min.csv"
@@ -30,22 +30,23 @@ def get_algorithm(name):
 def get_results(result_output):
     if os.path.exists(result_output):
         return pd.read_csv(result_output)
-    return pd.DataFrame(columns=["skip","n_bands","case_name","algorithm","train_size","R^2","bands"])
+    return pd.DataFrame(columns=["manual","n_bands","case_name","algorithm","train_size","R^2","bands"])
 
 
-def run_case(algorithm,train_size,skip=0,case_name=None,bands=None,result_output=None):
+def run_case(algorithm,train_size,n_bands=0,bands=None,case_name=None,result_output=None,manual=0):
     if result_output is None:
         result_output = results_file
     model = get_algorithm(algorithm)
     train_data, test_data = train_test_split(data, train_size=train_size, random_state=42)
     if bands is None:
-        bands = [i for i in range(0,data.shape[1]-1,skip)]
+        bands = np.linspace(0, 4199, n_bands)
+        bands = np.round(bands, 0).astype(int)
+    else:
+        n_bands = len(bands)
     bands = sorted(bands)
     if case_name is None:
-        case_name = f"{train_size}"
-        if skip > 0:
-            case_name += f"_{skip}"
-        case_name += f"_{algorithm}"
+        case_name = f"{train_size}_{algorithm}_{manual}"
+
     bands_str = "|".join([str(b) for b in bands])
 
     X_train = train_data[:,bands]
@@ -64,18 +65,18 @@ def run_case(algorithm,train_size,skip=0,case_name=None,bands=None,result_output
 
 
     results = get_results(result_output)
-    results.loc[len(results)] = [skip,len(bands),case_name,algorithm,train_size,r2,bands_str]
+    results.loc[len(results)] = [manual,n_bands,case_name,algorithm,train_size,r2,bands_str]
     results.to_csv(result_output, index=False)
 
 
 if __name__ == "__main__":
     algorithm = ["lr","svr","rf","mlp"]
-    skip = [1,10,50,90,130,170,210,250,290,330,370,410,450,490,530]
+    n_band = [300, 600,900,1200, 1500, 1800, 2100, 2400, 2700, 3000, 3300, 3600, 3900, 4200]
     train_size = [0.01,0.11,0.21,0.31,0.41,0.51,0.61,0.71,0.81,0.91]
     for a in algorithm:
-        for s in skip:
+        for n in n_band:
             for t in train_size:
-                run_case(a,t,s)
+                run_case(a,t,n)
 
     bands = [0,45,334,430,657,1367,1976,2876,3013,3091,3397,3614,3821,3887,4199]
     for a in algorithm:
