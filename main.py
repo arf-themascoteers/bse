@@ -69,7 +69,8 @@ def run_case(algorithm,train_size,skip=0,case_name=None,bands=None,result_output
 
 
 if __name__ == "__main__":
-    algorithm = ["lr","svr","rf","mlp"]
+    #algorithm = ["lr","svr","rf","mlp"]
+    algorithm = ["mlp","rf"]
     skip = [1,10,50,90,130,170,210,250,290,330,370,410,450,490,530]
     train_size = [0.01,0.11,0.21,0.31,0.41,0.51,0.61,0.71,0.81,0.91]
     for a in algorithm:
