@@ -19,32 +19,32 @@ algorithm_label = {
     "rf":"Random Forest",
     "svr":"Support Vector Machine"
 }
-colors = cm.jet(np.linspace(0, 1, 20))
+colors = cm.jet(np.linspace(0, 1, 11))
 
 for index, a in enumerate(algorithms):
     a_df = skip_df[skip_df["algorithm"] == a].copy()
     ax = axes[index]
-    ax.set_xlabel('Train size (%)', fontsize=18)
+    ax.set_xlabel('Number of bands', fontsize=18)
     ax.set_ylabel(r"$R^2$", fontsize=18)
-    ax.set_xticks([i for i in range(1,100,10)])
+    #ax.set_xticks([i for i in range(1,100,10)])
     ax.tick_params(axis='both', labelsize=14)
 
-    n_bands = sorted(a_df["n_bands"].unique())
+    train_size = sorted(a_df["train_size"].unique())
 
-    for c, bands in enumerate(n_bands):
-        that_df = a_df[a_df["n_bands"] == bands].copy()
-        ax.plot(that_df['train_size'], that_df["R^2"],
+    for c, bands in enumerate(train_size):
+        that_df = a_df[a_df["train_size"] == bands].copy()
+        ax.plot(that_df['n_bands'], that_df["R^2"],
                 label=str(bands),
                 color=colors[c],
                 fillstyle='none', markersize=7, linewidth=2)
 
     if index == 0:
-        legend = ax.legend(loc='upper left', ncols=15,bbox_to_anchor=(0,1.2),title='Number of bands')
+        legend = ax.legend(loc='upper left', ncols=15,bbox_to_anchor=(0,1.2),title='Train size (%)')
         legend.get_title().set_fontsize('12')
         legend.get_title().set_fontweight('bold')
     ax.set_title(algorithm_label[a], fontsize=20)
 
-plt.savefig("plot.png", bbox_inches='tight', pad_inches=0.05)
+plt.savefig("plot2.png", bbox_inches='tight', pad_inches=0.05)
 plt.show()
 plt.close(fig)
 
